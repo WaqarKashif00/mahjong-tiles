@@ -88,7 +88,7 @@ export class GameService {
     let discardPile = s.discardPile;
     let reshuffleCount = s.reshuffleCount;
 
-    if (drawPile.length < HAND_SIZE) {
+    if (drawPile.length === 0) {
       if (reshuffleCount >= MAX_RESHUFFLES) {
         this._state.set({
           ...s,
