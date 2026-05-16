@@ -123,10 +123,20 @@ $color-dragon-haku:  #555555;
 }
 
 .tile-card__suit-label {
-  font-size: 0.52em;
-  color: #888;
-  letter-spacing: 0.02em;
+  font-size: 0.48em;
+  font-family: 'Inter', sans-serif;
+  color: #777;
+  letter-spacing: 0.01em;
   margin-top: -2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-align: center;
+
+  .tile-card--small & {
+    font-size: 0.38em;
+  }
 }
 
 // ── Keyframes ─────────────────────────────────────────────────────────────────

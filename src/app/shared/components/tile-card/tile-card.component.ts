@@ -43,11 +43,11 @@ export class TileCardComponent {
 
   get suitLabel(): string {
     const t = this.tile;
-    if (t.suit === 'man') return '萬';
-    if (t.suit === 'sou') return '竹';
-    if (t.suit === 'pin') return '筒';
+    if (t.suit === 'man') return 'Man';
+    if (t.suit === 'sou') return 'Bamboo';
+    if (t.suit === 'pin') return 'Circles';
     if (t.windType) {
-      return { east: 'East', south: 'South', west: 'West', north: 'North' }[t.windType] ?? '';
+      return { east: 'East Wind', south: 'South Wind', west: 'West Wind', north: 'North Wind' }[t.windType] ?? '';
     }
     if (t.dragonType) {
       return { chun: 'Red Dragon', hatsu: 'Green Dragon', haku: 'White Dragon' }[t.dragonType] ?? '';
