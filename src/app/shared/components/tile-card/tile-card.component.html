@@ -1,0 +1,6 @@
+<div [ngClass]="cssClasses">
+  <span class="tile-card__top-value">{{ value }}</span>
+  <span class="tile-card__symbol">{{ symbol }}</span>
+  <span class="tile-card__suit-label" *ngIf="size === 'large'">{{ suitLabel }}</span>
+  <span class="tile-card__bottom-value">{{ value }}</span>
+</div>

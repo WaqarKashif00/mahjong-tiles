@@ -1,0 +1,411 @@
+// ── Game shell ─────────────────────────────────────────────────────────────
+.game {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 16px 24px;
+  gap: 0;
+}
+
+// ── Header ─────────────────────────────────────────────────────────────────
+.game__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 4px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 16px;
+}
+
+.btn-icon {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.7);
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+  }
+}
+
+.game__meta {
+  text-align: center;
+}
+
+.game__round {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.game__score-block {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.game__score-label {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.game__score-value {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f0c060;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 16px rgba(240,192,96,0.5);
+  transition: transform 0.2s;
+}
+
+// ── History strip ──────────────────────────────────────────────────────────
+.history-strip {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 8px 4px 12px;
+  margin-bottom: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+
+.history-strip__entry {
+  flex-shrink: 0;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  padding: 8px 10px;
+  min-width: 160px;
+  transition: border-color 0.2s;
+
+  &--win  { border-color: rgba(80,200,80,0.3); }
+  &--loss { border-color: rgba(200,60,60,0.3); }
+}
+
+.history-strip__header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.history-strip__round {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.4);
+  font-variant-numeric: tabular-nums;
+}
+
+.history-strip__total {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.history-strip__badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+
+  .history-strip__entry--win  & { color: #4cde6a; }
+  .history-strip__entry--loss & { color: #de4c4c; }
+}
+
+.history-strip__tiles {
+  display: flex;
+  gap: 4px;
+}
+
+// ── Play area ──────────────────────────────────────────────────────────────
+.game__play-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 8px 0;
+}
+
+// ── Hand section ───────────────────────────────────────────────────────────
+.hand-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: fade-in 0.3s ease;
+
+  &--revealed {
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255,255,255,0.12);
+  }
+}
+
+.hand-section__label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0 2px;
+}
+
+.hand-section__total {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.7);
+
+  strong {
+    font-size: 1.2rem;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &--pulse strong {
+    animation: value-pulse 2s ease infinite;
+  }
+}
+
+.hand-section__tiles {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+// ── Result banner ──────────────────────────────────────────────────────────
+.result-banner {
+  text-align: center;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  animation: banner-in 0.3s cubic-bezier(0.22,1,0.36,1) both;
+
+  &--win {
+    background: rgba(60,180,60,0.2);
+    border: 1px solid rgba(80,220,80,0.4);
+    color: #6de886;
+  }
+
+  &--loss {
+    background: rgba(180,50,50,0.2);
+    border: 1px solid rgba(220,80,80,0.4);
+    color: #e87070;
+  }
+}
+
+// ── Footer / controls ──────────────────────────────────────────────────────
+.game__footer {
+  margin-top: auto;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+// ── Deck stats ─────────────────────────────────────────────────────────────
+.deck-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 10px 20px;
+}
+
+.deck-stats__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0 20px;
+}
+
+.deck-stats__divider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255,255,255,0.1);
+}
+
+.deck-stats__icon {
+  font-size: 1.1rem;
+  opacity: 0.6;
+}
+
+.deck-stats__count {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.deck-stats__label {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.38);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+// ── Bet controls ───────────────────────────────────────────────────────────
+.bet-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.bet-controls__prompt {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.55);
+  text-align: center;
+  margin: 0;
+}
+
+.bet-controls__buttons {
+  display: flex;
+  gap: 14px;
+  width: 100%;
+  max-width: 480px;
+}
+
+.bet-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 18px 12px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s, border-color 0.15s;
+  font-family: inherit;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &--higher {
+    background: rgba(60,140,220,0.15);
+    border-color: rgba(80,160,240,0.35);
+    color: #7ac4f8;
+
+    &:hover {
+      background: rgba(60,140,220,0.28);
+      border-color: rgba(80,160,240,0.7);
+      box-shadow: 0 6px 24px rgba(60,140,220,0.3);
+    }
+  }
+
+  &--lower {
+    background: rgba(220,120,60,0.15);
+    border-color: rgba(240,140,80,0.35);
+    color: #f8b47a;
+
+    &:hover {
+      background: rgba(220,120,60,0.28);
+      border-color: rgba(240,140,80,0.7);
+      box-shadow: 0 6px 24px rgba(220,120,60,0.3);
+    }
+  }
+}
+
+.bet-btn__arrow {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.bet-btn__label {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.bet-btn__hint {
+  font-size: 0.7rem;
+  opacity: 0.6;
+  letter-spacing: 0.02em;
+}
+
+// ── Continue button ────────────────────────────────────────────────────────
+.btn--continue {
+  background: linear-gradient(135deg, #d4a83a, #f0c060, #d4a83a);
+  color: #1a0a00;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 40px;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(212,168,58,0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(212,168,58,0.5);
+  }
+}
+
+// ── Bet badge ──────────────────────────────────────────────────────────────
+.bet-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  &--higher {
+    background: rgba(60,140,220,0.2);
+    color: #7ac4f8;
+  }
+
+  &--lower {
+    background: rgba(220,120,60,0.2);
+    color: #f8b47a;
+  }
+}
+
+// ── Keyframes ──────────────────────────────────────────────────────────────
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes value-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+@keyframes banner-in {
+  from { opacity: 0; transform: scale(0.9) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}

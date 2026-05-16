@@ -1,0 +1,157 @@
+// ── Variables ────────────────────────────────────────────────────────────────
+$tile-bg: linear-gradient(145deg, #fefef8, #f0e9d0);
+$tile-border: 1px solid #d4c89a;
+$tile-shadow:
+  inset 0 1px 0 rgba(255,255,255,0.8),
+  2px 3px 0 #c8b97a,
+  3px 5px 12px rgba(0,0,0,0.5);
+
+$tile-border-radius: 6px;
+$tile-font: 'Noto Serif', 'Noto Sans CJK SC', serif;
+
+// Suit colours
+$color-man:    #c41a1a;
+$color-sou:    #0a7a0a;
+$color-pin:    #1a50c4;
+$color-wind:   #2a2a2a;
+$color-dragon-chun:  #cc1111;
+$color-dragon-hatsu: #0a8a0a;
+$color-dragon-haku:  #555555;
+
+// ── Large tile ───────────────────────────────────────────────────────────────
+.tile-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: $tile-bg;
+  border: $tile-border;
+  border-radius: $tile-border-radius;
+  box-shadow: $tile-shadow;
+  font-family: $tile-font;
+  user-select: none;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    filter 0.3s ease;
+
+  &--large {
+    width: 68px;
+    height: 92px;
+    gap: 2px;
+  }
+
+  &--small {
+    width: 38px;
+    height: 52px;
+    gap: 0;
+  }
+
+  // ── Suit colours ────────────────────────────────────────────────────────
+  &--man    .tile-card__symbol { color: $color-man; }
+  &--sou    .tile-card__symbol { color: $color-sou; }
+  &--pin    .tile-card__symbol { color: $color-pin; }
+  &--wind   .tile-card__symbol { color: $color-wind; font-size: 1.6em; }
+  &--dragon .tile-card__symbol { font-size: 1.8em; }
+
+  &--chun   .tile-card__symbol { color: $color-dragon-chun; }
+  &--hatsu  .tile-card__symbol { color: $color-dragon-hatsu; }
+  &--haku   .tile-card__symbol {
+    color: $color-dragon-haku;
+    -webkit-text-stroke: 1px #555;
+  }
+
+  // ── Outcome states ───────────────────────────────────────────────────────
+  &--win {
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.8),
+      2px 3px 0 #2a7a2a,
+      3px 5px 16px rgba(0,180,0,0.6),
+      0 0 24px rgba(0,220,0,0.4);
+    animation: pulse-win 0.6s ease-in-out;
+  }
+
+  &--loss {
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.8),
+      2px 3px 0 #7a1a1a,
+      3px 5px 16px rgba(180,0,0,0.5),
+      0 0 24px rgba(220,0,0,0.3);
+    animation: shake-loss 0.5s ease-in-out;
+  }
+
+  // ── Deal animation ───────────────────────────────────────────────────────
+  &--animate {
+    animation: deal-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+// ── Inner elements ────────────────────────────────────────────────────────────
+.tile-card__symbol {
+  font-size: 2em;
+  line-height: 1;
+  text-align: center;
+
+  .tile-card--small & {
+    font-size: 1.3em;
+  }
+}
+
+.tile-card__top-value,
+.tile-card__bottom-value {
+  position: absolute;
+  font-size: 0.65em;
+  font-weight: 700;
+  color: #666;
+  line-height: 1;
+
+  .tile-card--small & {
+    font-size: 0.55em;
+  }
+}
+
+.tile-card__top-value {
+  top: 4px;
+  left: 5px;
+}
+
+.tile-card__bottom-value {
+  bottom: 4px;
+  right: 5px;
+  transform: rotate(180deg);
+}
+
+.tile-card__suit-label {
+  font-size: 0.52em;
+  color: #888;
+  letter-spacing: 0.02em;
+  margin-top: -2px;
+}
+
+// ── Keyframes ─────────────────────────────────────────────────────────────────
+@keyframes deal-in {
+  from {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.8) rotate(-6deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes pulse-win {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.12); }
+  70%  { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shake-loss {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px) rotate(-2deg); }
+  40%       { transform: translateX(6px) rotate(2deg); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}

@@ -1,0 +1,308 @@
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+.game-over {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  position: relative;
+  overflow: hidden;
+
+  /* Entrance animation — toggled by .game-over--visible */
+  opacity: 0;
+  transform: translateY(24px) scale(0.97);
+  transition: opacity 500ms ease, transform 500ms ease;
+
+  &--visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Background decorative tiles ─────────────────────────────────────────── */
+.game-over__deco {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.04;
+  font-family: var(--font-tile);
+  font-size: 18rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  filter: blur(2px);
+  overflow: hidden;
+}
+
+/* ── Card ────────────────────────────────────────────────────────────────── */
+.game-over__card {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.04),
+    0 32px 64px rgba(0, 0, 0, 0.5),
+    0 0 80px rgba(240, 192, 96, 0.06);
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.game-over__header {
+  text-align: center;
+}
+
+.game-over__icon {
+  display: block;
+  font-size: 3rem;
+  margin-bottom: 12px;
+  animation: bounce-in 600ms cubic-bezier(0.34, 1.56, 0.64, 1) 200ms both;
+}
+
+.game-over__title {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px var(--color-gold-glow);
+}
+
+.game-over__reason {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+/* ── Score block ─────────────────────────────────────────────────────────── */
+.game-over__score-block {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.game-over__score-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.game-over__score-value {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  text-shadow: 0 0 30px var(--color-gold-glow);
+  line-height: 1;
+  animation: count-in 600ms cubic-bezier(0.34, 1.56, 0.64, 1) 300ms both;
+}
+
+.game-over__rounds {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+/* ── High score banner ───────────────────────────────────────────────────── */
+.game-over__high-score {
+  background: linear-gradient(135deg, rgba(240,192,96,0.12), rgba(240,192,96,0.04));
+  border: 1px solid rgba(240, 192, 96, 0.3);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: fade-in 400ms ease 400ms both;
+}
+
+.high-score__badge {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-gold);
+}
+
+.high-score__hint {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* ── Saved confirmation ──────────────────────────────────────────────────── */
+.game-over__saved {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  background: var(--color-win-bg);
+  border: 1px solid rgba(74, 222, 128, 0.25);
+  border-radius: var(--radius-md);
+  animation: fade-in 300ms ease;
+}
+
+.saved__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-win);
+  color: #0d0d14;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.saved__label {
+  font-size: 0.9rem;
+  color: var(--color-win);
+}
+
+/* ── Name input form ─────────────────────────────────────────────────────── */
+.game-over__form {
+  animation: fade-in 400ms ease 300ms both;
+}
+
+.form-field__label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+
+.form-field__row {
+  display: flex;
+  gap: 8px;
+}
+
+.form-field__input {
+  flex: 1;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+
+  &::placeholder { color: var(--color-text-muted); }
+
+  &:focus {
+    border-color: var(--color-gold-dim);
+    box-shadow: 0 0 0 3px var(--color-gold-glow);
+  }
+}
+
+.btn--submit {
+  padding: 10px 18px;
+  background: linear-gradient(135deg, var(--color-gold-dim), var(--color-gold));
+  color: #0d0d14;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  transition: opacity var(--transition-fast), transform var(--transition-fast),
+              box-shadow var(--transition-fast);
+
+  &:hover {
+    opacity: 0.9;
+    box-shadow: 0 4px 16px var(--color-gold-glow);
+    transform: translateY(-1px);
+  }
+  &:active { transform: translateY(0); }
+}
+
+/* ── Action buttons ──────────────────────────────────────────────────────── */
+.game-over__actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+              background var(--transition-fast);
+
+  &:active { transform: scale(0.97); }
+}
+
+.btn__icon { font-size: 1.1em; }
+
+.btn--primary {
+  background: linear-gradient(135deg, var(--color-gold-dim) 0%, var(--color-gold) 100%);
+  color: #0d0d14;
+
+  &:hover {
+    box-shadow: 0 6px 20px var(--color-gold-glow);
+    transform: translateY(-2px);
+  }
+}
+
+.btn--secondary {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.16);
+    transform: translateY(-2px);
+  }
+}
+
+/* ── Animations ──────────────────────────────────────────────────────────── */
+@keyframes bounce-in {
+  from { opacity: 0; transform: scale(0.5); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes count-in {
+  from { opacity: 0; transform: scale(0.7) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .game-over__card { padding: 28px 20px; }
+  .game-over__score-value { font-size: 2.75rem; }
+  .game-over__title { font-size: 1.75rem; }
+  .game-over__actions { flex-direction: column; }
+  .form-field__row { flex-direction: column; }
+  .btn--submit { width: 100%; }
+}

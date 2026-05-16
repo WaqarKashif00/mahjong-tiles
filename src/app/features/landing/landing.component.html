@@ -1,0 +1,65 @@
+<div class="landing">
+  <!-- Hero -->
+  <div class="landing__hero">
+    <div class="landing__tile-deco" aria-hidden="true">
+      <span class="deco-tile deco-tile--man">中</span>
+      <span class="deco-tile deco-tile--wind">東</span>
+      <span class="deco-tile deco-tile--sou">發</span>
+    </div>
+    <h1 class="landing__title">
+      <span class="landing__title-main">Mahjong</span>
+      <span class="landing__title-sub">Hand Betting</span>
+    </h1>
+    <p class="landing__tagline">Bet higher or lower — watch your tiles evolve</p>
+  </div>
+
+  <!-- Actions -->
+  <div class="landing__actions">
+    <button class="btn btn--primary btn--lg" (click)="startGame()">
+      <span class="btn__icon">🀄</span>
+      New Game
+    </button>
+  </div>
+
+  <!-- Leaderboard -->
+  <section class="leaderboard" aria-labelledby="leaderboard-heading">
+    <h2 id="leaderboard-heading" class="leaderboard__title">Top Scores</h2>
+
+    <div class="leaderboard__table" *ngIf="topEntries().length > 0; else emptyBoard">
+      <div class="leaderboard__header">
+        <span class="leaderboard__col--rank">Rank</span>
+        <span class="leaderboard__col--name">Player</span>
+        <span class="leaderboard__col--score">Score</span>
+        <span class="leaderboard__col--rounds">Rounds</span>
+        <span class="leaderboard__col--date">Date</span>
+      </div>
+
+      <div
+        class="leaderboard__row"
+        *ngFor="let entry of topEntries(); let i = index"
+        [class.leaderboard__row--gold]="i === 0"
+        [class.leaderboard__row--silver]="i === 1"
+        [class.leaderboard__row--bronze]="i === 2"
+      >
+        <span class="leaderboard__col--rank leaderboard__medal">
+          <ng-container [ngSwitch]="i">
+            <span *ngSwitchCase="0">🥇</span>
+            <span *ngSwitchCase="1">🥈</span>
+            <span *ngSwitchCase="2">🥉</span>
+            <span *ngSwitchDefault>{{ i + 1 }}</span>
+          </ng-container>
+        </span>
+        <span class="leaderboard__col--name">{{ entry.name }}</span>
+        <span class="leaderboard__col--score leaderboard__score">{{ entry.score | number }}</span>
+        <span class="leaderboard__col--rounds">{{ entry.rounds }}</span>
+        <span class="leaderboard__col--date">{{ entry.date | date: 'MMM d, y' }}</span>
+      </div>
+    </div>
+
+    <ng-template #emptyBoard>
+      <div class="leaderboard__empty">
+        No scores yet — be the first to play!
+      </div>
+    </ng-template>
+  </section>
+</div>

@@ -1,0 +1,161 @@
+<div class="game" [class.game--revealing]="phase() === 'revealing'">
+
+  <!-- ── Header ─────────────────────────────────────────────────────────── -->
+  <header class="game__header">
+    <button class="btn-icon" (click)="exitGame()" title="Exit game" aria-label="Exit to home">
+      ← Exit
+    </button>
+    <div class="game__meta">
+      <span class="game__round">Round {{ round() }}</span>
+    </div>
+    <div class="game__score-block">
+      <span class="game__score-label">Score</span>
+      <span class="game__score-value">{{ score() | number }}</span>
+    </div>
+  </header>
+
+  <!-- ── History strip ──────────────────────────────────────────────────── -->
+  <section class="history-strip" *ngIf="recentHistory().length > 0" aria-label="Hand history">
+    <div
+      class="history-strip__entry"
+      *ngFor="let record of recentHistory()"
+      [class.history-strip__entry--win]="record.won"
+      [class.history-strip__entry--loss]="record.won === false"
+    >
+      <div class="history-strip__header">
+        <span class="history-strip__round">R{{ record.round }}</span>
+        <span class="history-strip__total">{{ record.total }}</span>
+        <span class="history-strip__badge" *ngIf="record.won !== undefined">
+          {{ record.won ? '✓' : '✗' }}
+        </span>
+      </div>
+      <div class="history-strip__tiles">
+        <app-tile-card
+          *ngFor="let tile of record.tiles"
+          [tile]="tile"
+          [tileValues]="tileValues()"
+          size="small"
+          [outcome]="record.won === true ? 'win' : record.won === false ? 'loss' : 'neutral'"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Main play area ─────────────────────────────────────────────────── -->
+  <main class="game__play-area">
+
+    <!-- Current hand -->
+    <section class="hand-section" aria-label="Current hand">
+      <div class="hand-section__label">
+        <span>Current Hand</span>
+        <span class="hand-section__total" [class.hand-section__total--pulse]="phase() === 'betting'">
+          Total: <strong>{{ currentHandTotal() }}</strong>
+        </span>
+      </div>
+      <div class="hand-section__tiles">
+        <app-tile-card
+          *ngFor="let tile of currentHand(); let i = index"
+          [tile]="tile"
+          [tileValues]="tileValues()"
+          size="large"
+          [animate]="animatedCurrentIndices()[i]"
+          outcome="neutral"
+        />
+      </div>
+    </section>
+
+    <!-- Revealed hand (during 'revealing' phase) -->
+    <section
+      class="hand-section hand-section--revealed"
+      *ngIf="phase() === 'revealing' && revealedHand()"
+      aria-label="Next hand"
+    >
+      <div class="hand-section__label">
+        <span>Next Hand</span>
+        <span class="hand-section__total">
+          Total: <strong>{{ revealedHandTotal() }}</strong>
+        </span>
+      </div>
+      <div class="hand-section__tiles">
+        <app-tile-card
+          *ngFor="let tile of revealedHand()!; let i = index"
+          [tile]="tile"
+          [tileValues]="tileValues()"
+          size="large"
+          [animate]="animatedRevealIndices()[i]"
+          [outcome]="revealOutcome()"
+        />
+      </div>
+    </section>
+  </main>
+
+  <!-- ── Result banner ──────────────────────────────────────────────────── -->
+  <div
+    class="result-banner"
+    *ngIf="showResultBanner()"
+    [class.result-banner--win]="lastResult() === 'win'"
+    [class.result-banner--loss]="lastResult() === 'loss'"
+    role="status"
+    aria-live="polite"
+  >
+    <span *ngIf="lastResult() === 'win'">✨ Correct! +{{ revealedHandTotal() }} points</span>
+    <span *ngIf="lastResult() === 'loss'">✗ Wrong bet!</span>
+  </div>
+
+  <!-- ── Betting controls ────────────────────────────────────────────────── -->
+  <footer class="game__footer">
+
+    <!-- Deck stats -->
+    <div class="deck-stats">
+      <div class="deck-stats__item">
+        <span class="deck-stats__icon">🂠</span>
+        <span class="deck-stats__count">{{ drawPileCount() }}</span>
+        <span class="deck-stats__label">Draw</span>
+      </div>
+      <div class="deck-stats__divider"></div>
+      <div class="deck-stats__item">
+        <span class="deck-stats__icon">♻</span>
+        <span class="deck-stats__count">{{ reshuffleCount() }}/2</span>
+        <span class="deck-stats__label">Reshuffles</span>
+      </div>
+      <div class="deck-stats__divider"></div>
+      <div class="deck-stats__item">
+        <span class="deck-stats__icon">🗑</span>
+        <span class="deck-stats__count">{{ discardPileCount() }}</span>
+        <span class="deck-stats__label">Discard</span>
+      </div>
+    </div>
+
+    <!-- Bet buttons -->
+    <div class="bet-controls" *ngIf="phase() === 'betting'">
+      <p class="bet-controls__prompt">Will the next hand be…</p>
+      <div class="bet-controls__buttons">
+        <button class="bet-btn bet-btn--lower" (click)="placeBet('lower')">
+          <span class="bet-btn__arrow">↓</span>
+          <span class="bet-btn__label">Lower</span>
+          <span class="bet-btn__hint">Next hand &lt; {{ currentHandTotal() }}</span>
+        </button>
+        <button class="bet-btn bet-btn--higher" (click)="placeBet('higher')">
+          <span class="bet-btn__arrow">↑</span>
+          <span class="bet-btn__label">Higher</span>
+          <span class="bet-btn__hint">Next hand &gt; {{ currentHandTotal() }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Continue button after reveal -->
+    <div class="bet-controls" *ngIf="phase() === 'revealing'">
+      <p class="bet-controls__prompt">
+        You bet
+        <strong class="bet-badge" [class.bet-badge--higher]="currentBet() === 'higher'" [class.bet-badge--lower]="currentBet() === 'lower'">
+          {{ currentBet() | uppercase }}
+        </strong>
+        — {{ currentHandTotal() }} vs {{ revealedHandTotal() }}
+      </p>
+      <button class="btn btn--continue" (click)="continueAfterReveal()">
+        Continue →
+      </button>
+    </div>
+
+  </footer>
+</div>
