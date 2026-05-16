@@ -88,7 +88,7 @@ export class GameService {
     let discardPile = s.discardPile;
     let reshuffleCount = s.reshuffleCount;
 
-    if (drawPile.length === 0) {
+    if (drawPile.length < HAND_SIZE) {
       if (reshuffleCount >= MAX_RESHUFFLES) {
         this._state.set({
           ...s,
@@ -153,8 +153,8 @@ export class GameService {
     // Check game-over conditions AFTER updating values
     const gameOverResult = this.checkGameOver(tileValues, s.reshuffleCount, s.drawPile.length);
 
-    // Move current hand → discard, revealed hand also → discard
-    const discardPile = [...s.discardPile, ...s.currentHand, ...s.revealedHand];
+    // Only discard the old current hand — revealed hand becomes the new current hand
+    const discardPile = [...s.discardPile, ...s.currentHand];
 
     if (gameOverResult) {
       this._state.set({

@@ -139,6 +139,37 @@ $color-dragon-haku:  #555555;
   }
 }
 
+// ── Laptop / desktop sizing ───────────────────────────────────────────────────
+@media (min-width: 768px) {
+  .tile-card--large {
+    width: 84px;
+    height: 116px;
+    gap: 3px;
+  }
+
+  .tile-card--small {
+    width: 46px;
+    height: 64px;
+  }
+
+  .tile-card--large .tile-card__symbol {
+    font-size: 2.5em;
+  }
+
+  .tile-card--large .tile-card__top-value,
+  .tile-card--large .tile-card__bottom-value {
+    font-size: 0.72em;
+  }
+
+  .tile-card--large .tile-card__suit-label {
+    font-size: 0.52em;
+  }
+
+  .tile-card--small .tile-card__symbol {
+    font-size: 1.5em;
+  }
+}
+
 // ── Keyframes ─────────────────────────────────────────────────────────────────
 @keyframes deal-in {
   from {
