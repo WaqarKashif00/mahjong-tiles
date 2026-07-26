@@ -98,9 +98,9 @@ export class GameService {
         });
         return;
       }
-      // Reshuffle: fresh deck + discard pile → new draw pile
+      // Reshuffle: fresh deck + discard pile + any leftover draw-pile tiles → new draw pile
       const freshDeck = this.deck.createDeck();
-      drawPile = this.deck.shuffle([...freshDeck, ...discardPile]);
+      drawPile = this.deck.shuffle([...freshDeck, ...discardPile, ...drawPile]);
       discardPile = [];
       reshuffleCount++;
     }

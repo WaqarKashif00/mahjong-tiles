@@ -9,7 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { GameService } from '../../core/services/game.service';
-import { BetType } from '../../core/models/game.model';
+import { BetType, MAX_RESHUFFLES } from '../../core/models/game.model';
 import { TileCardComponent } from '../../shared/components/tile-card/tile-card.component';
 
 const REVEAL_STAGGER_MS = 80;
@@ -48,6 +48,7 @@ export class GameComponent implements OnInit {
   protected readonly discardPileCount = this.game.discardPileCount;
   protected readonly handHistory = this.game.handHistory;
   protected readonly reshuffleCount = this.game.reshuffleCount;
+  protected readonly maxReshuffles = MAX_RESHUFFLES;
   protected readonly currentBet = this.game.currentBet;
 
   protected readonly recentHistory = computed(() =>
